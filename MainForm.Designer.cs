@@ -34,10 +34,10 @@ namespace LibraryManagementApp
         private void InitializeComponent()
         {
             components = new Container();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(MainForm));
             BookLabel = new Label();
             LibraryManagementLabel = new Label();
             dgvBooks = new DataGridView();
-            bookBindingSource = new BindingSource(components);
             lblUser = new Label();
             btnBookManage = new Button();
             btnBorrowManage = new Button();
@@ -46,8 +46,11 @@ namespace LibraryManagementApp
             btnSave = new Button();
             btnAdd = new Button();
             btnDelete = new Button();
+            bookBindingSource = new BindingSource(components);
+            pictureBox1 = new PictureBox();
             ((ISupportInitialize)dgvBooks).BeginInit();
             ((ISupportInitialize)bookBindingSource).BeginInit();
+            ((ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // BookLabel
@@ -62,7 +65,7 @@ namespace LibraryManagementApp
             // LibraryManagementLabel
             // 
             LibraryManagementLabel.AutoSize = true;
-            LibraryManagementLabel.Location = new Point(38, 46);
+            LibraryManagementLabel.Location = new Point(445, 46);
             LibraryManagementLabel.Name = "LibraryManagementLabel";
             LibraryManagementLabel.Size = new Size(79, 15);
             LibraryManagementLabel.TabIndex = 7;
@@ -90,7 +93,7 @@ namespace LibraryManagementApp
             // 
             // btnBookManage
             // 
-            btnBookManage.Location = new Point(38, 87);
+            btnBookManage.Location = new Point(38, 101);
             btnBookManage.Name = "btnBookManage";
             btnBookManage.Size = new Size(75, 23);
             btnBookManage.TabIndex = 15;
@@ -100,7 +103,7 @@ namespace LibraryManagementApp
             // 
             // btnBorrowManage
             // 
-            btnBorrowManage.Location = new Point(147, 87);
+            btnBorrowManage.Location = new Point(138, 101);
             btnBorrowManage.Name = "btnBorrowManage";
             btnBorrowManage.Size = new Size(75, 23);
             btnBorrowManage.TabIndex = 16;
@@ -110,7 +113,7 @@ namespace LibraryManagementApp
             // 
             // btnUserManage
             // 
-            btnUserManage.Location = new Point(259, 87);
+            btnUserManage.Location = new Point(252, 101);
             btnUserManage.Name = "btnUserManage";
             btnUserManage.Size = new Size(75, 23);
             btnUserManage.TabIndex = 17;
@@ -158,11 +161,21 @@ namespace LibraryManagementApp
             btnDelete.UseVisualStyleBackColor = true;
             btnDelete.Click += btnDelete_Click;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(12, 11);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(417, 84);
+            pictureBox1.TabIndex = 22;
+            pictureBox1.TabStop = false;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(pictureBox1);
             Controls.Add(btnDelete);
             Controls.Add(btnAdd);
             Controls.Add(btnSave);
@@ -178,6 +191,7 @@ namespace LibraryManagementApp
             Text = "MainForm";
             ((ISupportInitialize)dgvBooks).EndInit();
             ((ISupportInitialize)bookBindingSource).EndInit();
+            ((ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -192,7 +206,6 @@ namespace LibraryManagementApp
         private Button btnBorrowManage;
         private Button btnUserManage;
         private Button btnLogout;
-        private BindingSource bookBindingSource;
         private Button btnSave;
         private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn;
@@ -202,5 +215,7 @@ namespace LibraryManagementApp
         private DataGridViewTextBoxColumn quantityDataGridViewTextBoxColumn;
         private Button btnAdd;
         private Button btnDelete;
+        private BindingSource bookBindingSource;
+        private PictureBox pictureBox1;
     }
 }

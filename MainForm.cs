@@ -56,7 +56,21 @@ namespace LibraryManagementApp
 
         private void btnBookManage_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("開啟書籍管理畫面...");
+            LoadBooks();
+
+            if (dgvBooks.Enabled == true)
+            {
+                MessageBox.Show("關閉書籍管理畫面...");
+                dgvBooks.Enabled = false;
+                dgvBooks.Visible = false;
+            }
+            else
+            {
+                MessageBox.Show("開啟書籍管理畫面...");
+                dgvBooks.Enabled = true;
+                dgvBooks.Visible = true;
+            }
+
         }
 
         private void btnBorrowManage_Click(object sender, EventArgs e)
