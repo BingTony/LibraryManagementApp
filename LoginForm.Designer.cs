@@ -28,104 +28,89 @@
         /// </summary>
         private void InitializeComponent()
         {
-            AccountLabel = new Label();
-            PasswordLabel = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            button1 = new Button();
-            button2 = new Button();
-            LibraryManagementLabel = new Label();
+            lblAccount = new Label();
+            lblPassword = new Label();
+            txtUsername = new TextBox();
+            txtPassword = new TextBox();
+            btnLogin = new Button();
+            lblLibraryManagement = new Label();
             SuspendLayout();
             // 
-            // AccountLabel
+            // lblAccount
             // 
-            AccountLabel.AutoSize = true;
-            AccountLabel.Location = new Point(57, 97);
-            AccountLabel.Name = "AccountLabel";
-            AccountLabel.Size = new Size(53, 15);
-            AccountLabel.TabIndex = 0;
-            AccountLabel.Text = "Account";
-            AccountLabel.Click += label1_Click;
+            lblAccount.AutoSize = true;
+            lblAccount.Location = new Point(57, 97);
+            lblAccount.Name = "lblAccount";
+            lblAccount.Size = new Size(53, 15);
+            lblAccount.TabIndex = 0;
+            lblAccount.Text = "Account";
             // 
-            // PasswordLabel
+            // lblPassword
             // 
-            PasswordLabel.AutoSize = true;
-            PasswordLabel.Location = new Point(57, 177);
-            PasswordLabel.Name = "PasswordLabel";
-            PasswordLabel.Size = new Size(60, 15);
-            PasswordLabel.TabIndex = 1;
-            PasswordLabel.Text = "Password";
+            lblPassword.AutoSize = true;
+            lblPassword.Location = new Point(57, 177);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new Size(60, 15);
+            lblPassword.TabIndex = 1;
+            lblPassword.Text = "Password";
             // 
-            // textBox1
+            // txtUsername
             // 
-            textBox1.Location = new Point(194, 97);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(100, 23);
-            textBox1.TabIndex = 2;
-            textBox1.TextChanged += textBox1_TextChanged;
+            txtUsername.Location = new Point(194, 97);
+            txtUsername.Name = "txtUsername";
+            txtUsername.Size = new Size(100, 23);
+            txtUsername.TabIndex = 2;
             // 
-            // textBox2
+            // txtPassword
             // 
-            textBox2.Location = new Point(194, 177);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(100, 23);
-            textBox2.TabIndex = 3;
+            txtPassword.Location = new Point(194, 177);
+            txtPassword.Name = "txtPassword";
+            txtPassword.Size = new Size(100, 23);
+            txtPassword.TabIndex = 3;
             // 
-            // button1
+            // btnLogin
             // 
-            button1.Location = new Point(57, 296);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 4;
-            button1.Text = "Login";
-            button1.UseVisualStyleBackColor = true;
+            btnLogin.Location = new Point(57, 296);
+            btnLogin.Name = "btnLogin";
+            btnLogin.Size = new Size(75, 23);
+            btnLogin.TabIndex = 4;
+            btnLogin.Text = "Login";
+            btnLogin.UseVisualStyleBackColor = true;
+            btnLogin.Click += BtnLogin_Click;
             // 
-            // button2
+            // lblLibraryManagement
             // 
-            button2.Location = new Point(194, 296);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 5;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
+            lblLibraryManagement.AutoSize = true;
+            lblLibraryManagement.Location = new Point(122, 31);
+            lblLibraryManagement.Name = "lblLibraryManagement";
+            lblLibraryManagement.Size = new Size(79, 15);
+            lblLibraryManagement.TabIndex = 6;
+            lblLibraryManagement.Text = "書本管理系統";
             // 
-            // LibraryManagementLabel
-            // 
-            LibraryManagementLabel.AutoSize = true;
-            LibraryManagementLabel.Location = new Point(122, 31);
-            LibraryManagementLabel.Name = "LibraryManagementLabel";
-            LibraryManagementLabel.Size = new Size(79, 15);
-            LibraryManagementLabel.TabIndex = 6;
-            LibraryManagementLabel.Text = "書本管理系統";
-            LibraryManagementLabel.Click += label3_Click;
-            // 
-            // Form1
+            // LoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(LibraryManagementLabel);
-            Controls.Add(button2);
-            Controls.Add(button1);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
-            Controls.Add(PasswordLabel);
-            Controls.Add(AccountLabel);
-            Name = "Form1";
-            Text = "Form1";
-            Load += Form1_Load;
+            Controls.Add(lblLibraryManagement);
+            Controls.Add(btnLogin);
+            Controls.Add(txtPassword);
+            Controls.Add(txtUsername);
+            Controls.Add(lblPassword);
+            Controls.Add(lblAccount);
+            Name = "LoginForm";
+            Text = "LoginForm";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label AccountLabel;
-        private Label PasswordLabel;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private Button button1;
-        private Button button2;
-        private Label LibraryManagementLabel;
+        private Label lblAccount;
+        private Label lblPassword;
+        private TextBox txtUsername;
+        private TextBox txtPassword;
+        private Button btnLogin;
+        private Label lblLibraryManagement;
     }
 }

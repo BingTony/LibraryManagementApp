@@ -1,3 +1,6 @@
+using LibraryManagementApp.Models;
+using LibraryManagementApp.Utils;
+
 namespace LibraryManagementApp
 {
     public partial class LoginForm : Form
@@ -7,24 +10,37 @@ namespace LibraryManagementApp
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        /// <summary>
+        /// 使用者按下登入按鈕
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnLogin_Click(object sender, EventArgs e)
         {
+            // 先檢查資料庫連線
+            if (!DatabaseHelper.TestConnection())
+            {
+                MessageBox.Show("無法連接到資料庫，請稍後再試！", "連線錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-        }
+            var username = txtUsername.Text.Trim();
+            var password = txtPassword.Text.Trim();
 
-        private void label1_Click(object sender, EventArgs e)
-        {
+            using var db = new LibraryContext();
+            var user = db.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
 
-        }
+            if (user == null)
+            {
+                MessageBox.Show("帳號或密碼錯誤！", "登入失敗", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
+            // 登入成功 → 開主畫面
+            var main = new MainForm(user);
+            this.Hide();
+            main.ShowDialog();
+            this.Close();
         }
     }
 }
