@@ -21,6 +21,7 @@ namespace LibraryManagementApp
         /// </summary>
         private void LoadBooks()
         {
+            _db = new LibraryContext();
             var books = _db.Books.ToList();
             dgvBooks.DataSource = books;
         }

@@ -47,6 +47,7 @@ namespace LibraryManagementApp
             btnDelete = new Button();
             bookBindingSource = new BindingSource(components);
             pictureBox1 = new PictureBox();
+            btnRefresh = new Button();
             ((ISupportInitialize)dgvBooks).BeginInit();
             ((ISupportInitialize)bookBindingSource).BeginInit();
             ((ISupportInitialize)pictureBox1).BeginInit();
@@ -160,11 +161,22 @@ namespace LibraryManagementApp
             pictureBox1.TabIndex = 22;
             pictureBox1.TabStop = false;
             // 
+            // btnRefresh
+            // 
+            btnRefresh.Location = new Point(37, 180);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(75, 23);
+            btnRefresh.TabIndex = 23;
+            btnRefresh.Text = "重整清單";
+            btnRefresh.UseVisualStyleBackColor = true;
+            btnRefresh.Click += btnRefresh_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnRefresh);
             Controls.Add(pictureBox1);
             Controls.Add(btnDelete);
             Controls.Add(btnAdd);
@@ -205,5 +217,6 @@ namespace LibraryManagementApp
         private Button btnDelete;
         private BindingSource bookBindingSource;
         private PictureBox pictureBox1;
+        private Button btnRefresh;
     }
 }

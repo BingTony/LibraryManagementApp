@@ -16,8 +16,10 @@ namespace LibraryManagementApp
 
         private void LoadUsers()
         {
+            _db = new LibraryContext();
             var users = _db.Users.ToList();
             dgvUserManagement.DataSource = users;
+            
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

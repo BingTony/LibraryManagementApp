@@ -1,0 +1,4 @@
+{
+	"Server": "(localdb)\\MSSQLLocalDB",
+	"Database": "BookLibraryDB"
+}

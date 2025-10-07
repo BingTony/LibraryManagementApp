@@ -9,19 +9,26 @@ namespace LibraryManagementApp
         {
             ApplicationConfiguration.Initialize();
 
-            // 確保資料庫存在 & 預設管理員
-            using (var db = new LibraryContext())
+            try
             {
-                db.Database.EnsureCreated();
-
-                if (!db.Users.Any())
+                // 確保資料庫存在 & 預設管理員
+                using (var db = new LibraryContext())
                 {
-                    db.Users.Add(new User { Username = "admin", Password = "admin", Role = "Admin" });
-                    db.SaveChanges();
-                }
-            }
+                    db.Database.EnsureCreated();
 
-            Application.Run(new LoginForm());
+                    if (!db.Users.Any())
+                    {
+                        db.Users.Add(new User { Username = "admin", Password = "admin", Role = "Admin" });
+                        db.SaveChanges();
+                    }
+                }
+
+                Application.Run(new LoginForm());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"應用程式啟動失敗：{ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

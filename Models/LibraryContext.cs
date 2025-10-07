@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementApp.Models
 {
@@ -13,8 +14,26 @@ namespace LibraryManagementApp.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // 連線到本機 LocalDB
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=BookLibraryDB;Trusted_Connection=True;TrustServerCertificate=True;");
+            // 從外部檔案取得 server 和 database 設定
+            var configPath = "dbconfig.json";
+            string server = "(localdb)\\MSSQLLocalDB"; // 預設本機 LocalDB
+            string database = "BookLibraryDB";
+
+            if (File.Exists(configPath))
+            {
+                var json = File.ReadAllText(configPath);
+                var config = System.Text.Json.JsonSerializer.Deserialize<DbConfig>(json);
+                if (config != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(config.Server))
+                        server = config.Server;
+                    if (!string.IsNullOrWhiteSpace(config.Database))
+                        database = config.Database;
+                }
+            }
+
+            var connectionString = $"Server={server};Database={database};Trusted_Connection=True;TrustServerCertificate=True;";
+            optionsBuilder.UseSqlServer(connectionString);
         }
     }
 }

@@ -28,6 +28,7 @@ namespace LibraryManagementApp
         /// </summary>
         private void LoadBooks()
         {
+            _db = new LibraryContext();
             var books = _db.Books.ToList();
             dgvBooks.DataSource = books;
         }
@@ -43,6 +44,8 @@ namespace LibraryManagementApp
                 btnUserManage.Visible = false;
                 btnBookManage.Enabled = false;
                 btnBookManage.Visible = false;
+                btnRefresh.Enabled = false;
+                btnRefresh.Visible = false;
                 dgvBooks.Enabled = false;
                 dgvBooks.Visible = false;
                 btnAdd.Enabled = false;
@@ -165,6 +168,12 @@ namespace LibraryManagementApp
                 MessageBox.Show($"刪除失敗：{ex.Message}");
                 Debug.WriteLine(ex);
             }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadBooks();
+            MessageBox.Show("書籍資料已重新整理！");
         }
     }
 }
