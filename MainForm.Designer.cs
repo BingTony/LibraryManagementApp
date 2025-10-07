@@ -70,22 +70,12 @@ namespace LibraryManagementApp
             // 
             // dgvBooks
             // 
-            dgvBooks.AutoGenerateColumns = false;
             dgvBooks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvBooks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvBooks.Columns.AddRange(new DataGridViewColumn[] { 
-                new DataGridViewTextBoxColumn { DataPropertyName = "Id", HeaderText = "ID", ReadOnly = true },
-                new DataGridViewTextBoxColumn { DataPropertyName = "Title", HeaderText = "書名" },
-                new DataGridViewTextBoxColumn { DataPropertyName = "Author", HeaderText = "作者" },
-                new DataGridViewTextBoxColumn { DataPropertyName = "Publisher", HeaderText = "出版社" },
-                new DataGridViewTextBoxColumn { DataPropertyName = "Category", HeaderText = "類別" },
-                new DataGridViewTextBoxColumn { DataPropertyName = "Quantity", HeaderText = "數量" }
-            });
-            dgvBooks.DataSource = bookBindingSource;
             dgvBooks.EditMode = DataGridViewEditMode.EditOnKeystroke;
             dgvBooks.Location = new Point(138, 149);
             dgvBooks.Name = "dgvBooks";
-            dgvBooks.Size = new Size(547, 237);
+            dgvBooks.Size = new Size(547, 289);
             dgvBooks.TabIndex = 8;
             // 
             // lblUser
@@ -130,7 +120,7 @@ namespace LibraryManagementApp
             // 
             // btnLogout
             // 
-            btnLogout.Location = new Point(586, 87);
+            btnLogout.Location = new Point(701, 415);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(75, 23);
             btnLogout.TabIndex = 18;
@@ -140,7 +130,7 @@ namespace LibraryManagementApp
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(701, 315);
+            btnSave.Location = new Point(701, 210);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(75, 23);
             btnSave.TabIndex = 19;
@@ -150,7 +140,7 @@ namespace LibraryManagementApp
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(701, 203);
+            btnAdd.Location = new Point(701, 165);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(75, 23);
             btnAdd.TabIndex = 20;
@@ -160,7 +150,7 @@ namespace LibraryManagementApp
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(701, 260);
+            btnDelete.Location = new Point(701, 312);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(75, 23);
             btnDelete.TabIndex = 21;

@@ -30,55 +30,24 @@
         {
             components = new System.ComponentModel.Container();
             dgvUserManagement = new DataGridView();
-            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            usernameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            passwordDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            roleDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             userBindingSource = new BindingSource(components);
             btnAdd = new Button();
             btnSave = new Button();
             btnDelete = new Button();
+            btnClose = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvUserManagement).BeginInit();
             ((System.ComponentModel.ISupportInitialize)userBindingSource).BeginInit();
             SuspendLayout();
             // 
             // dgvUserManagement
             // 
-            dgvUserManagement.AutoGenerateColumns = false;
             dgvUserManagement.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvUserManagement.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvUserManagement.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, usernameDataGridViewTextBoxColumn, passwordDataGridViewTextBoxColumn, roleDataGridViewTextBoxColumn });
-            dgvUserManagement.DataSource = userBindingSource;
             dgvUserManagement.EditMode = DataGridViewEditMode.EditOnKeystroke;
             dgvUserManagement.Location = new Point(-5, 1);
             dgvUserManagement.Name = "dgvUserManagement";
             dgvUserManagement.Size = new Size(647, 447);
             dgvUserManagement.TabIndex = 0;
-            // 
-            // idDataGridViewTextBoxColumn
-            // 
-            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.HeaderText = "Id";
-            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            idDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // usernameDataGridViewTextBoxColumn
-            // 
-            usernameDataGridViewTextBoxColumn.DataPropertyName = "Username";
-            usernameDataGridViewTextBoxColumn.HeaderText = "Username";
-            usernameDataGridViewTextBoxColumn.Name = "usernameDataGridViewTextBoxColumn";
-            // 
-            // passwordDataGridViewTextBoxColumn
-            // 
-            passwordDataGridViewTextBoxColumn.DataPropertyName = "Password";
-            passwordDataGridViewTextBoxColumn.HeaderText = "Password";
-            passwordDataGridViewTextBoxColumn.Name = "passwordDataGridViewTextBoxColumn";
-            // 
-            // roleDataGridViewTextBoxColumn
-            // 
-            roleDataGridViewTextBoxColumn.DataPropertyName = "Role";
-            roleDataGridViewTextBoxColumn.HeaderText = "Role";
-            roleDataGridViewTextBoxColumn.Name = "roleDataGridViewTextBoxColumn";
             // 
             // btnAdd
             // 
@@ -92,7 +61,7 @@
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(675, 119);
+            btnSave.Location = new Point(675, 98);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(75, 23);
             btnSave.TabIndex = 2;
@@ -102,7 +71,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(675, 183);
+            btnDelete.Location = new Point(675, 321);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(75, 23);
             btnDelete.TabIndex = 3;
@@ -110,11 +79,22 @@
             btnDelete.UseVisualStyleBackColor = true;
             btnDelete.Click += btnDelete_Click;
             // 
+            // btnClose
+            // 
+            btnClose.Location = new Point(675, 415);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(75, 23);
+            btnClose.TabIndex = 4;
+            btnClose.Text = "關閉";
+            btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
+            // 
             // UserManagementForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnClose);
             Controls.Add(btnDelete);
             Controls.Add(btnSave);
             Controls.Add(btnAdd);
@@ -137,5 +117,6 @@
         private Button btnAdd;
         private Button btnSave;
         private Button btnDelete;
+        private Button btnClose;
     }
 }

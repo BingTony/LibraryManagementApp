@@ -19,13 +19,7 @@ namespace LibraryManagementApp
 
             lblUser.Text = $"登入使用者：{user.Username} ({user.Role})";
 
-            // 根據角色決定哪些功能可見
-            if (user.Role != "Admin")
-            {
-                btnUserManage.Enabled = false;
-                btnUserManage.Visible = false;
-            }
-
+            UserPermission();
             LoadBooks();
         }
 
@@ -36,6 +30,28 @@ namespace LibraryManagementApp
         {
             var books = _db.Books.ToList();
             dgvBooks.DataSource = books;
+        }
+
+        /// <summary>
+        /// 根據角色決定哪些功能可見
+        /// </summary>
+        private void UserPermission()
+        {
+            if (_currentUser.Role != "Admin")
+            {
+                btnUserManage.Enabled = false;
+                btnUserManage.Visible = false;
+                dgvBooks.Enabled = false;
+                dgvBooks.Visible = false;
+                btnAdd.Enabled = false;
+                btnAdd.Visible = false;
+                btnDelete.Enabled = false;
+                btnDelete.Visible = false;
+                btnSave.Enabled = false;
+                btnSave.Visible = false;
+                BookLabel.Enabled = false;
+                BookLabel.Visible = false;
+            }
         }
 
         private void btnBookManage_Click(object sender, EventArgs e)
@@ -73,19 +89,27 @@ namespace LibraryManagementApp
         /// <param name="e"></param>
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var newBook = new Book
+            try
             {
-                Title = "新書籍",
-                Author = "",
-                Publisher = "",
-                Category = "",
-                Quantity = 1
-            };
+                var newBook = new Book
+                {
+                    Title = "新書籍",
+                    Author = "",
+                    Publisher = "",
+                    Category = "",
+                    Quantity = 1
+                };
 
-            _db.Books.Add(newBook);
-            _db.SaveChanges();
+                _db.Books.Add(newBook);
+                _db.SaveChanges();
 
-            LoadBooks();
+                LoadBooks();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"新增失敗：{ex.Message}");
+                Debug.WriteLine(ex);
+            }
         }
 
         /// <summary>
@@ -109,11 +133,19 @@ namespace LibraryManagementApp
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dgvBooks.CurrentRow?.DataBoundItem is Book selected)
+            try
             {
-                _db.Books.Remove(selected);
-                _db.SaveChanges();
-                LoadBooks();
+                if (dgvBooks.CurrentRow?.DataBoundItem is Book selected)
+                {
+                    _db.Books.Remove(selected);
+                    _db.SaveChanges();
+                    LoadBooks();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"刪除失敗：{ex.Message}");
+                Debug.WriteLine(ex);
             }
         }
     }

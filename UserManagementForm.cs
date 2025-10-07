@@ -17,7 +17,7 @@ namespace LibraryManagementApp
         private void LoadUsers()
         {
             var users = _db.Users.ToList();
-            userBindingSource.DataSource = users;
+            dgvUserManagement.DataSource = users;
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -77,6 +77,11 @@ namespace LibraryManagementApp
             {
                 MessageBox.Show($"儲存失敗：{ex.Message}");
             }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
