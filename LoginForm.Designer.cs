@@ -34,6 +34,7 @@
             txtPassword = new TextBox();
             btnLogin = new Button();
             lblLibraryManagement = new Label();
+            btnClose = new Button();
             SuspendLayout();
             // 
             // lblAccount
@@ -87,11 +88,22 @@
             lblLibraryManagement.TabIndex = 6;
             lblLibraryManagement.Text = "書本管理系統";
             // 
+            // btnClose
+            // 
+            btnClose.Location = new Point(194, 296);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(75, 23);
+            btnClose.TabIndex = 7;
+            btnClose.Text = "退出";
+            btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
+            // 
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnClose);
             Controls.Add(lblLibraryManagement);
             Controls.Add(btnLogin);
             Controls.Add(txtPassword);
@@ -112,5 +124,6 @@
         private TextBox txtPassword;
         private Button btnLogin;
         private Label lblLibraryManagement;
+        private Button btnClose;
     }
 }

@@ -1,6 +1,4 @@
 ﻿using LibraryManagementApp.Models;
-using LibraryManagementApp.Repos;
-using System.Data;
 using System.Diagnostics;
 
 namespace LibraryManagementApp
@@ -53,6 +51,9 @@ namespace LibraryManagementApp
         private void btnUserManage_Click(object sender, EventArgs e)
         {
             MessageBox.Show("開啟使用者管理畫面...");
+
+            var userForm = new UserManagementForm();
+            userForm.ShowDialog();
         }
 
         private void btnLogout_Click(object sender, EventArgs e)

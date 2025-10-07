@@ -42,5 +42,10 @@ namespace LibraryManagementApp
             main.ShowDialog();
             this.Close();
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }
