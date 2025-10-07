@@ -41,9 +41,12 @@
             // 
             // dgvBooks
             // 
+            dgvBooks.AllowUserToAddRows = false;
+            dgvBooks.AllowUserToDeleteRows = false;
             dgvBooks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvBooks.Location = new Point(41, 39);
             dgvBooks.Name = "dgvBooks";
+            dgvBooks.ReadOnly = true;
             dgvBooks.Size = new Size(574, 161);
             dgvBooks.TabIndex = 0;
             // 
@@ -79,12 +82,14 @@
             // 
             // dgvBorrowRecords
             // 
+            dgvBorrowRecords.AllowUserToAddRows = false;
+            dgvBorrowRecords.AllowUserToDeleteRows = false;
             dgvBorrowRecords.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvBorrowRecords.Location = new Point(41, 249);
             dgvBorrowRecords.Name = "dgvBorrowRecords";
+            dgvBorrowRecords.ReadOnly = true;
             dgvBorrowRecords.Size = new Size(574, 170);
             dgvBorrowRecords.TabIndex = 4;
-            dgvBorrowRecords.CellContentClick += dgvBorrowRecords_CellContentClick;
             // 
             // lblBookStock
             // 
@@ -94,7 +99,6 @@
             lblBookStock.Size = new Size(55, 15);
             lblBookStock.TabIndex = 5;
             lblBookStock.Text = "書本庫存";
-            lblBookStock.Click += label1_Click;
             // 
             // lblBorrowedBooks
             // 
