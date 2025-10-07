@@ -1,4 +1,10 @@
-﻿namespace LibraryManagementApp
+﻿using LibraryManagementApp.Models;
+using LibraryManagementApp.Repos;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Forms;
+
+namespace LibraryManagementApp
 {
     partial class MainForm
     {
@@ -28,9 +34,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new Container();
             BookLabel = new Label();
             LibraryManagementLabel = new Label();
-            dataGridView1 = new DataGridView();
+            dgvBooks = new DataGridView();
+            bookBindingSource = new BindingSource(components);
             lblUser = new Label();
             lblBookTitle = new Label();
             lblAuthor = new Label();
@@ -41,7 +49,11 @@
             btnBorrowManage = new Button();
             btnUserManage = new Button();
             btnLogout = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            btnSave = new Button();
+            btnAdd = new Button();
+            btnDelete = new Button();
+            ((ISupportInitialize)dgvBooks).BeginInit();
+            ((ISupportInitialize)bookBindingSource).BeginInit();
             SuspendLayout();
             // 
             // BookLabel
@@ -62,13 +74,17 @@
             LibraryManagementLabel.TabIndex = 7;
             LibraryManagementLabel.Text = "書本管理系統";
             // 
-            // dataGridView1
+            // dgvBooks
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(174, 158);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(454, 77);
-            dataGridView1.TabIndex = 8;
+            dgvBooks.AutoGenerateColumns = false;
+            dgvBooks.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvBooks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvBooks.DataSource = bookBindingSource;
+            dgvBooks.EditMode = DataGridViewEditMode.EditOnKeystroke;
+            dgvBooks.Location = new Point(174, 158);
+            dgvBooks.Name = "dgvBooks";
+            dgvBooks.Size = new Size(547, 237);
+            dgvBooks.TabIndex = 8;
             // 
             // lblUser
             // 
@@ -78,11 +94,12 @@
             lblUser.Size = new Size(43, 15);
             lblUser.TabIndex = 9;
             lblUser.Text = "使用者";
+            lblUser.Click += lblUser_Click;
             // 
             // lblBookTitle
             // 
             lblBookTitle.AutoSize = true;
-            lblBookTitle.Location = new Point(73, 254);
+            lblBookTitle.Location = new Point(15, 411);
             lblBookTitle.Name = "lblBookTitle";
             lblBookTitle.Size = new Size(31, 15);
             lblBookTitle.TabIndex = 10;
@@ -91,7 +108,7 @@
             // lblAuthor
             // 
             lblAuthor.AutoSize = true;
-            lblAuthor.Location = new Point(174, 254);
+            lblAuthor.Location = new Point(116, 411);
             lblAuthor.Name = "lblAuthor";
             lblAuthor.Size = new Size(31, 15);
             lblAuthor.TabIndex = 11;
@@ -100,7 +117,7 @@
             // lblPublisher
             // 
             lblPublisher.AutoSize = true;
-            lblPublisher.Location = new Point(273, 254);
+            lblPublisher.Location = new Point(215, 411);
             lblPublisher.Name = "lblPublisher";
             lblPublisher.Size = new Size(43, 15);
             lblPublisher.TabIndex = 12;
@@ -109,7 +126,7 @@
             // lblCategory
             // 
             lblCategory.AutoSize = true;
-            lblCategory.Location = new Point(383, 254);
+            lblCategory.Location = new Point(325, 411);
             lblCategory.Name = "lblCategory";
             lblCategory.Size = new Size(31, 15);
             lblCategory.TabIndex = 13;
@@ -118,7 +135,7 @@
             // lblQuantity
             // 
             lblQuantity.AutoSize = true;
-            lblQuantity.Location = new Point(486, 254);
+            lblQuantity.Location = new Point(428, 411);
             lblQuantity.Name = "lblQuantity";
             lblQuantity.Size = new Size(31, 15);
             lblQuantity.TabIndex = 14;
@@ -164,11 +181,44 @@
             btnLogout.UseVisualStyleBackColor = true;
             btnLogout.Click += btnLogout_Click;
             // 
+            // btnSave
+            // 
+            btnSave.Location = new Point(725, 324);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(75, 23);
+            btnSave.TabIndex = 19;
+            btnSave.Text = "儲存修改";
+            btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
+            // 
+            // btnAdd
+            // 
+            btnAdd.Location = new Point(725, 212);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(75, 23);
+            btnAdd.TabIndex = 20;
+            btnAdd.Text = "新增書本";
+            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
+            // 
+            // btnDelete
+            // 
+            btnDelete.Location = new Point(725, 269);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(75, 23);
+            btnDelete.TabIndex = 21;
+            btnDelete.Text = "刪除書本";
+            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnDelete);
+            Controls.Add(btnAdd);
+            Controls.Add(btnSave);
             Controls.Add(btnLogout);
             Controls.Add(btnUserManage);
             Controls.Add(btnBorrowManage);
@@ -179,12 +229,13 @@
             Controls.Add(lblAuthor);
             Controls.Add(lblBookTitle);
             Controls.Add(lblUser);
-            Controls.Add(dataGridView1);
+            Controls.Add(dgvBooks);
             Controls.Add(LibraryManagementLabel);
             Controls.Add(BookLabel);
             Name = "MainForm";
             Text = "MainForm";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((ISupportInitialize)dgvBooks).EndInit();
+            ((ISupportInitialize)bookBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -195,7 +246,7 @@
         private Label label2;
         private Label BookLabel;
         private Label LibraryManagementLabel;
-        private DataGridView dataGridView1;
+        private DataGridView dgvBooks;
         private Label lblUser;
         private Label lblAuthor;
         private Label lblPublisher;
@@ -205,5 +256,15 @@
         private Button btnBorrowManage;
         private Button btnUserManage;
         private Button btnLogout;
+        private BindingSource bookBindingSource;
+        private Button btnSave;
+        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn authorDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn publisherDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn quantityDataGridViewTextBoxColumn;
+        private Button btnAdd;
+        private Button btnDelete;
     }
 }
