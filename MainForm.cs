@@ -41,6 +41,8 @@ namespace LibraryManagementApp
             {
                 btnUserManage.Enabled = false;
                 btnUserManage.Visible = false;
+                btnBookManage.Enabled = false;
+                btnBookManage.Visible = false;
                 dgvBooks.Enabled = false;
                 dgvBooks.Visible = false;
                 btnAdd.Enabled = false;
@@ -76,6 +78,8 @@ namespace LibraryManagementApp
         private void btnBorrowManage_Click(object sender, EventArgs e)
         {
             MessageBox.Show("開啟借閱管理畫面...");
+            var borrowForm = new BookBorrowForm(_currentUser);
+            borrowForm.ShowDialog();
         }
 
         private void btnUserManage_Click(object sender, EventArgs e)

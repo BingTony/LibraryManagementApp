@@ -8,8 +8,5 @@ namespace LibraryManagementApp.Models
         public int BookId { get; set; }
         public DateTime BorrowedAt { get; set; } = DateTime.Now;
         public DateTime? ReturnedAt { get; set; }
-
-        public User? User { get; set; }
-        public Book? Book { get; set; }
     }
 }

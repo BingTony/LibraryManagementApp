@@ -36,7 +36,6 @@ namespace LibraryManagementApp
             components = new Container();
             ComponentResourceManager resources = new ComponentResourceManager(typeof(MainForm));
             BookLabel = new Label();
-            LibraryManagementLabel = new Label();
             dgvBooks = new DataGridView();
             lblUser = new Label();
             btnBookManage = new Button();
@@ -61,15 +60,6 @@ namespace LibraryManagementApp
             BookLabel.Size = new Size(76, 15);
             BookLabel.TabIndex = 2;
             BookLabel.Text = ">> 書本管理";
-            // 
-            // LibraryManagementLabel
-            // 
-            LibraryManagementLabel.AutoSize = true;
-            LibraryManagementLabel.Location = new Point(445, 46);
-            LibraryManagementLabel.Name = "LibraryManagementLabel";
-            LibraryManagementLabel.Size = new Size(79, 15);
-            LibraryManagementLabel.TabIndex = 7;
-            LibraryManagementLabel.Text = "書本管理系統";
             // 
             // dgvBooks
             // 
@@ -113,7 +103,7 @@ namespace LibraryManagementApp
             // 
             // btnUserManage
             // 
-            btnUserManage.Location = new Point(252, 101);
+            btnUserManage.Location = new Point(242, 101);
             btnUserManage.Name = "btnUserManage";
             btnUserManage.Size = new Size(75, 23);
             btnUserManage.TabIndex = 17;
@@ -185,7 +175,6 @@ namespace LibraryManagementApp
             Controls.Add(btnBookManage);
             Controls.Add(lblUser);
             Controls.Add(dgvBooks);
-            Controls.Add(LibraryManagementLabel);
             Controls.Add(BookLabel);
             Name = "MainForm";
             Text = "MainForm";
@@ -199,7 +188,6 @@ namespace LibraryManagementApp
         #endregion
         private Label label2;
         private Label BookLabel;
-        private Label LibraryManagementLabel;
         private DataGridView dgvBooks;
         private Label lblUser;
         private Button btnBookManage;
