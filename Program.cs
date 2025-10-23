@@ -13,7 +13,7 @@ namespace LibraryManagementApp
             ApplicationConfiguration.Initialize();
 
             var services = new ServiceCollection();
-              
+               
             // Services
             services.AddSingleton<IBookService, BookService>();
             services.AddSingleton<IAuthService, AuthService>();
