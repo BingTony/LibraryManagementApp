@@ -1,36 +1,27 @@
-using LibraryManagementApp.Models;
-using LibraryManagementApp.Utils;
+using LibraryManagementApp.Controllers;
 
 namespace LibraryManagementApp
 {
     public partial class LoginForm : Form
     {
-        public LoginForm()
+        private readonly LoginController _loginController;
+        private readonly BookController _bookController;
+
+        public LoginForm(LoginController loginController, BookController bookController)
         {
             InitializeComponent();
+            _loginController = loginController ?? throw new ArgumentNullException(nameof(loginController));
+            _bookController = bookController ?? throw new ArgumentNullException(nameof(bookController));
         }
 
-        /// <summary>
-        /// 使用者按下登入按鈕
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnLogin_Click(object sender, EventArgs e)
+        private async void BtnLogin_Click(object sender, EventArgs e)
         {
             try
             {
-                // 先檢查資料庫連線
-                if (!DatabaseHelper.TestConnection())
-                {
-                    MessageBox.Show("無法連接到資料庫，請稍後再試！", "連線錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
                 var username = txtUsername.Text.Trim();
                 var password = txtPassword.Text.Trim();
 
-                using var db = new LibraryContext();
-                var user = db.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
+                var user = await _loginController.AuthenticateAsync(username, password);
 
                 if (user == null)
                 {
@@ -38,11 +29,16 @@ namespace LibraryManagementApp
                     return;
                 }
 
-                // 登入成功 → 開主畫面
-                var main = new MainForm(user);
+                // Login successful -> open main form
+                var main = new MainForm(user, _bookController);
+
                 this.Hide();
                 main.ShowDialog();
                 this.Close();
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show($"無法連接到資料庫：{ex.Message}", "連線錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {

@@ -1,67 +1,55 @@
-﻿using LibraryManagementApp.Models;
-using System.Diagnostics;
+﻿using System.ComponentModel;
+using LibraryManagementApp.Controllers;
+using LibraryManagementApp.Models;
 
 namespace LibraryManagementApp
 {
-    /// <summary>
-    /// 系統主畫面
-    /// </summary>
     public partial class MainForm : Form
     {
         private readonly User _currentUser;
-        private LibraryContext _db = new LibraryContext();
+        private readonly BookController _bookController;
+        private BindingList<Book> _bookList = new();
 
-
-        public MainForm(User user)
+        internal MainForm(User user, BookController bookController)
         {
             InitializeComponent();
-            _currentUser = user;
+            _currentUser = user ?? throw new ArgumentNullException(nameof(user));
+            _bookController = bookController ?? throw new ArgumentNullException(nameof(bookController));
 
             lblUser.Text = $"登入使用者：{user.Username} ({user.Role})";
 
             UserPermission();
-            LoadBooks();
+
+            _ = LoadBooksAsync();
         }
 
-        /// <summary>
-        /// 載入書籍資料
-        /// </summary>
-        private void LoadBooks()
+        private async Task LoadBooksAsync()
         {
-            _db = new LibraryContext();
-            var books = _db.Books.ToList();
-            dgvBooks.DataSource = books;
-        }
-
-        /// <summary>
-        /// 根據角色決定哪些功能可見
-        /// </summary>
-        private void UserPermission()
-        {
-            if (_currentUser.Role != "Admin")
+            try
             {
-                btnUserManage.Enabled = false;
-                btnUserManage.Visible = false;
-                btnBookManage.Enabled = false;
-                btnBookManage.Visible = false;
-                btnRefresh.Enabled = false;
-                btnRefresh.Visible = false;
-                dgvBooks.Enabled = false;
-                dgvBooks.Visible = false;
-                btnAdd.Enabled = false;
-                btnAdd.Visible = false;
-                btnDelete.Enabled = false;
-                btnDelete.Visible = false;
-                btnSave.Enabled = false;
-                btnSave.Visible = false;
-                BookLabel.Enabled = false;
-                BookLabel.Visible = false;
+                var books = await _bookController.GetAllAsync();
+                _bookList = new BindingList<Book>(books);
+                dgvBooks.DataSource = _bookList;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"載入書籍失敗：{ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void btnBookManage_Click(object sender, EventArgs e)
+        private void UserPermission()
         {
-            LoadBooks();
+            var isAdmin = _currentUser.Role == "Admin";
+            btnUserManage.Enabled = btnBookManage.Enabled = btnRefresh.Enabled = dgvBooks.Enabled =
+                btnAdd.Enabled = btnDelete.Enabled = btnSave.Enabled = BookLabel.Enabled = isAdmin;
+
+            btnUserManage.Visible = btnBookManage.Visible = btnRefresh.Visible =
+                dgvBooks.Visible = btnAdd.Visible = btnDelete.Visible = btnSave.Visible = BookLabel.Visible = isAdmin;
+        }
+
+        private async void btnBookManage_Click(object sender, EventArgs e)
+        {
+            await LoadBooksAsync();
 
             if (dgvBooks.Enabled == true)
             {
@@ -98,17 +86,7 @@ namespace LibraryManagementApp
             this.Close();
         }
 
-        private void lblUser_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// 新增書籍
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnAdd_Click(object sender, EventArgs e)
+        private async void btnAdd_Click(object sender, EventArgs e)
         {
             try
             {
@@ -121,58 +99,51 @@ namespace LibraryManagementApp
                     Quantity = 1
                 };
 
-                _db.Books.Add(newBook);
-                _db.SaveChanges();
-
-                LoadBooks();
+                await _bookController.AddAsync(newBook);
+                await LoadBooksAsync();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"新增失敗：{ex.Message}");
-                Debug.WriteLine(ex);
             }
         }
 
-        /// <summary>
-        /// 儲存書籍資料
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                _db.SaveChanges();
-                MessageBox.Show("資料已更新！", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"儲存失敗：{ex.Message}");
-                Debug.WriteLine(ex);
-            }
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
+        private async void btnDelete_Click(object sender, EventArgs e)
         {
             try
             {
                 if (dgvBooks.CurrentRow?.DataBoundItem is Book selected)
                 {
-                    _db.Books.Remove(selected);
-                    _db.SaveChanges();
-                    LoadBooks();
+                    await _bookController.DeleteAsync(selected);
+                    await LoadBooksAsync();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"刪除失敗：{ex.Message}");
-                Debug.WriteLine(ex);
             }
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
-            LoadBooks();
+            try
+            {
+                if (dgvBooks.CurrentRow?.DataBoundItem is Book edited)
+                {
+                    await _bookController.UpdateAsync(edited);
+                    MessageBox.Show("資料已更新！", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    await LoadBooksAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"儲存失敗：{ex.Message}");
+            }
+        }
+
+        private async void btnRefresh_Click(object sender, EventArgs e)
+        {
+            await LoadBooksAsync();
             MessageBox.Show("書籍資料已重新整理！");
         }
     }

@@ -1,34 +1,35 @@
-using LibraryManagementApp.Models;
+using LibraryManagementApp.Controllers;
+using LibraryManagementApp.Services;
+using LibraryManagementApp.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LibraryManagementApp
 {
-    static class Program
+    internal static class Program
     {
         [STAThread]
         static void Main()
         {
             ApplicationConfiguration.Initialize();
 
-            try
-            {
-                // 確保資料庫存在 & 預設管理員
-                using (var db = new LibraryContext())
-                {
-                    db.Database.EnsureCreated();
+            var services = new ServiceCollection();
 
-                    if (!db.Users.Any())
-                    {
-                        db.Users.Add(new User { Username = "admin", Password = "admin", Role = "Admin" });
-                        db.SaveChanges();
-                    }
-                }
+            // Services
+            services.AddSingleton<IBookService, BookService>();
+            services.AddSingleton<IAuthService, AuthService>();
 
-                Application.Run(new LoginForm());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"應用程式啟動失敗：{ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            // Controllers
+            services.AddSingleton<BookController>();
+            services.AddSingleton<LoginController>();
+
+            // Forms
+            services.AddTransient(provider => ActivatorUtilities.CreateInstance<LoginForm>(provider));
+            services.AddTransient(provider => ActivatorUtilities.CreateInstance<MainForm>(provider));
+
+            var provider = services.BuildServiceProvider();
+
+            // Run the application
+            Application.Run(provider.GetRequiredService<LoginForm>());
         }
     }
 }

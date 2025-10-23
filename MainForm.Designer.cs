@@ -80,7 +80,6 @@ namespace LibraryManagementApp
             lblUser.Size = new Size(43, 15);
             lblUser.TabIndex = 9;
             lblUser.Text = "使用者";
-            lblUser.Click += lblUser_Click;
             // 
             // btnBookManage
             // 
