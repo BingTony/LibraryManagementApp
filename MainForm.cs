@@ -8,9 +8,10 @@ namespace LibraryManagementApp
     {
         private readonly User _currentUser;
         private readonly BookController _bookController;
+        private readonly BookBorrowController _bookBorrowController;
         private BindingList<Book> _bookList = new();
 
-        internal MainForm(User user, BookController bookController)
+        internal MainForm(User user, BookController bookController, BookBorrowController bookBorrowController)
         {
             InitializeComponent();
             _currentUser = user ?? throw new ArgumentNullException(nameof(user));
@@ -21,6 +22,7 @@ namespace LibraryManagementApp
             UserPermission();
 
             _ = LoadBooksAsync();
+            _bookBorrowController = bookBorrowController;
         }
 
         private async Task LoadBooksAsync()
@@ -49,36 +51,56 @@ namespace LibraryManagementApp
 
         private async void btnBookManage_Click(object sender, EventArgs e)
         {
-            await LoadBooksAsync();
-
-            if (dgvBooks.Enabled == true)
+            try
             {
-                MessageBox.Show("關閉書籍管理畫面...");
-                dgvBooks.Enabled = false;
-                dgvBooks.Visible = false;
-            }
-            else
-            {
-                MessageBox.Show("開啟書籍管理畫面...");
-                dgvBooks.Enabled = true;
-                dgvBooks.Visible = true;
-            }
+                await LoadBooksAsync();
 
+                if (dgvBooks.Enabled == true)
+                {
+                    MessageBox.Show("關閉書籍管理畫面...");
+                    dgvBooks.Enabled = false;
+                    dgvBooks.Visible = false;
+                }
+                else
+                {
+                    MessageBox.Show("開啟書籍管理畫面...");
+                    dgvBooks.Enabled = true;
+                    dgvBooks.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"無法開啟書籍管理畫面：{ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnBorrowManage_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("開啟借閱管理畫面...");
-            var borrowForm = new BookBorrowForm(_currentUser);
-            borrowForm.ShowDialog();
+            try
+            {
+                MessageBox.Show("開啟借閱管理畫面...");
+                var borrowForm = new BookBorrowForm(_bookBorrowController, _currentUser);
+                borrowForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"無法開啟借閱管理畫面：{ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnUserManage_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("開啟使用者管理畫面...");
+            try
+            {
+                MessageBox.Show("開啟使用者管理畫面...");
 
-            var userForm = new UserManagementForm();
-            userForm.ShowDialog();
+                var userForm = new UserManagementForm();
+                userForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"無法開啟使用者管理畫面：{ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
@@ -143,8 +165,15 @@ namespace LibraryManagementApp
 
         private async void btnRefresh_Click(object sender, EventArgs e)
         {
-            await LoadBooksAsync();
-            MessageBox.Show("書籍資料已重新整理！");
+            try
+            {
+                await LoadBooksAsync();
+                MessageBox.Show("書籍資料已重新整理！");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"重新整理失敗：{ex.Message}");
+            }
         }
     }
 }

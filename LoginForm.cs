@@ -6,12 +6,14 @@ namespace LibraryManagementApp
     {
         private readonly LoginController _loginController;
         private readonly BookController _bookController;
+        private readonly BookBorrowController _bookBorrowController;
 
-        public LoginForm(LoginController loginController, BookController bookController)
+        public LoginForm(LoginController loginController, BookController bookController, BookBorrowController bookBorrowController)
         {
             InitializeComponent();
             _loginController = loginController ?? throw new ArgumentNullException(nameof(loginController));
             _bookController = bookController ?? throw new ArgumentNullException(nameof(bookController));
+            _bookBorrowController = bookBorrowController;
         }
 
         private async void BtnLogin_Click(object sender, EventArgs e)
@@ -30,7 +32,7 @@ namespace LibraryManagementApp
                 }
 
                 // Login successful -> open main form
-                var main = new MainForm(user, _bookController);
+                var main = new MainForm(user, _bookController, _bookBorrowController);
 
                 this.Hide();
                 main.ShowDialog();

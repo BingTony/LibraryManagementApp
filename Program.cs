@@ -17,14 +17,17 @@ namespace LibraryManagementApp
             // Services
             services.AddSingleton<IBookService, BookService>();
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IBookBorrowService, BookBorrowService>();
 
             // Controllers
             services.AddSingleton<BookController>();
             services.AddSingleton<LoginController>();
+            services.AddSingleton<BookBorrowController>();
 
             // Forms
             services.AddTransient(provider => ActivatorUtilities.CreateInstance<LoginForm>(provider));
             services.AddTransient(provider => ActivatorUtilities.CreateInstance<MainForm>(provider));
+            services.AddTransient(provider => ActivatorUtilities.CreateInstance<BookBorrowForm>(provider));
 
             var provider = services.BuildServiceProvider();
 

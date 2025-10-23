@@ -1,5 +1,4 @@
-﻿
-namespace LibraryManagementApp.Models
+﻿namespace LibraryManagementApp.Models
 {
     public class BorrowRecord
     {

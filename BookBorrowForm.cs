@@ -1,81 +1,46 @@
-﻿using LibraryManagementApp.Models;
+﻿using LibraryManagementApp.Controllers;
+using LibraryManagementApp.Models;
 
 namespace LibraryManagementApp
 {
     public partial class BookBorrowForm : Form
     {
+        private readonly BookBorrowController _controller;
         private readonly User _currentUser;
-        private LibraryContext _db = new LibraryContext();
-
-        public BookBorrowForm(User currentUser)
+        
+        public BookBorrowForm(BookBorrowController controller, User currentUser)
         {
             InitializeComponent();
+            _controller = controller;
             _currentUser = currentUser;
 
             LoadBooks();
             LoadBorrowRecords();
         }
-
-        /// <summary>
-        /// 載入書籍資料
-        /// </summary>
-        private void LoadBooks()
+        
+        private async void LoadBooks()
         {
-            _db = new LibraryContext();
-            var books = _db.Books.ToList();
-            dgvBooks.DataSource = books;
+            try
+            {
+                var books = await _controller.GetAvailableBooksAsync();
+                dgvBooks.DataSource = books;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"載入書籍失敗：{ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        /// <summary>
-        /// 載入借閱紀錄
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LoadBorrowRecords()
-        {
-            var records = _db.BorrowRecords
-                .Where(r => r.UserId == _currentUser.Id)
-                .ToList();
-            dgvBorrowRecords.DataSource = records;
-        }
-
-        /// <summary>
-        /// 借閱選擇書本
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnBorrow_Click(object sender, EventArgs e)
+        private async void btnBorrow_Click(object sender, EventArgs e)
         {
             try
             {
                 var selectedBook = dgvBooks.CurrentRow?.DataBoundItem as Book;
-                if (selectedBook == null)
-                {
-                    MessageBox.Show("請選擇要借閱的書本。", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                if (selectedBook == null) return;
 
-                // 檢查書本數量
-                if (selectedBook.Quantity <= 0)
-                {
-                    MessageBox.Show("該書本目前無庫存，無法借閱。", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                await _controller.BorrowAsync(_currentUser.Id, selectedBook.Id);
 
-                // 建立借閱紀錄
-                var borrowRecord = new BorrowRecord
-                {
-                    UserId = _currentUser.Id,
-                    BookId = selectedBook.Id,
-                    BorrowedAt = DateTime.Now,
-                    ReturnedAt = null
-                };
-
-                _db.BorrowRecords.Add(borrowRecord);
-                selectedBook.Quantity -= 1; // 減少書本數量
-                _db.SaveChanges();
-                MessageBox.Show($"成功借閱書本：《{selectedBook.Title}》。", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                await Task.Delay(1);
                 LoadBooks();
                 LoadBorrowRecords();
             }
@@ -85,12 +50,13 @@ namespace LibraryManagementApp
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private async void LoadBorrowRecords()
         {
-            Close();
+            var records = await _controller.GetBorrowRecordsAsync(_currentUser.Id);
+            dgvBorrowRecords.DataSource = records;
         }
 
-        private void btnReturn_Click(object sender, EventArgs e)
+        private async void btnReturn_Click(object sender, EventArgs e)
         {
             try
             {
@@ -101,16 +67,11 @@ namespace LibraryManagementApp
                     return;
                 }
 
-                // 更新歸還時間
-                selectedRecord.ReturnedAt = DateTime.Now;
-                var book = _db.Books.Find(selectedRecord.BookId);
-                if (book != null)
-                {
-                    book.Quantity += 1; // 增加書本數量
-                }
-                _db.SaveChanges();
-                MessageBox.Show($"成功歸還書本：《{book?.Title}》。", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                await _controller.ReturnAsync(selectedRecord.Id);
 
+                MessageBox.Show("成功歸還書本。", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                await Task.Delay(1);
                 LoadBooks();
                 LoadBorrowRecords();
             }
@@ -118,6 +79,11 @@ namespace LibraryManagementApp
             {
                 MessageBox.Show($"歸還過程發生錯誤：{ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
