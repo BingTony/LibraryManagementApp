@@ -9,9 +9,10 @@ namespace LibraryManagementApp
         private readonly User _currentUser;
         private readonly BookController _bookController;
         private readonly BookBorrowController _bookBorrowController;
+        private readonly UserManagementController _userManagementController;
         private BindingList<Book> _bookList = new();
 
-        internal MainForm(User user, BookController bookController, BookBorrowController bookBorrowController)
+        internal MainForm(User user, BookController bookController, BookBorrowController bookBorrowController, UserManagementController userManagementController)
         {
             InitializeComponent();
             _currentUser = user ?? throw new ArgumentNullException(nameof(user));
@@ -23,6 +24,7 @@ namespace LibraryManagementApp
 
             _ = LoadBooksAsync();
             _bookBorrowController = bookBorrowController;
+            _userManagementController = userManagementController;
         }
 
         private async Task LoadBooksAsync()
@@ -94,7 +96,7 @@ namespace LibraryManagementApp
             {
                 MessageBox.Show("開啟使用者管理畫面...");
 
-                var userForm = new UserManagementForm();
+                var userForm = new UserManagementForm(_userManagementController);
                 userForm.ShowDialog();
             }
             catch (Exception ex)

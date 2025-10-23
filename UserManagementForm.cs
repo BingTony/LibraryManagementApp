@@ -1,28 +1,36 @@
-﻿using LibraryManagementApp.Models;
-
+﻿using LibraryManagementApp.Controllers;
+using LibraryManagementApp.Models;
+using System.Threading.Tasks;
 
 namespace LibraryManagementApp
 {
     public partial class UserManagementForm : Form
     {
-        private LibraryContext _db = new LibraryContext();
+        private readonly UserManagementController _controller;
 
-        public UserManagementForm()
+        public UserManagementForm(UserManagementController userManagementController)
         {
             InitializeComponent();
+            _controller = userManagementController;
 
-            LoadUsers();
+            _ = LoadUsers();
         }
 
-        private void LoadUsers()
+        private async Task LoadUsers()
         {
-            _db = new LibraryContext();
-            var users = _db.Users.ToList();
-            dgvUserManagement.DataSource = users;
-            
+            try
+            {
+                var users = await _controller.GetAllUsersAsync();
+                dgvUserManagement.DataSource = users;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"載入使用者失敗：{ex.Message}");
+            }
+
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private async void btnDelete_Click(object sender, EventArgs e)
         {
             try
             {
@@ -33,9 +41,8 @@ namespace LibraryManagementApp
                         var confirmResult = MessageBox.Show($"確定要刪除使用者 {selected.Username} 嗎？", "確認刪除", MessageBoxButtons.YesNo);
                         if (confirmResult == DialogResult.Yes)
                         {
-                            _db.Users.Remove(selected);
-                            _db.SaveChanges();
-                            LoadUsers();
+                            await _controller.DeleteUserAsync(selected);
+                            await LoadUsers();
                         }
                     }
                 }
@@ -46,7 +53,7 @@ namespace LibraryManagementApp
             }
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private async void btnAdd_Click(object sender, EventArgs e)
         {
             try
             {
@@ -57,9 +64,8 @@ namespace LibraryManagementApp
                     Role = "User"
                 };
 
-                _db.Users.Add(newUser);
-                _db.SaveChanges();
-                LoadUsers();
+                await _controller.AddUserAsync(newUser);
+                await LoadUsers();
             }
             catch (Exception ex)
             {
@@ -67,12 +73,19 @@ namespace LibraryManagementApp
             }
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
-                _db.SaveChanges();
-                LoadUsers();
+                if (dgvUserManagement.DataSource is List<User> users)
+                {
+                    foreach (var user in users)
+                    {
+                        await _controller.UpdateUserAsync(user);
+                    }
+                }
+
+                await LoadUsers();
                 MessageBox.Show("儲存成功！");
             }
             catch (Exception ex)
